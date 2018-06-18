@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use ReCaptcha\ReCaptcha;
 
 class RegisterController extends Controller
 {
@@ -34,62 +33,13 @@ class RegisterController extends Controller
     protected $redirectTo = '/home';
 
     /**
-     * @var ReCaptcha
-     */
-    protected $captcha;
-
-    /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(ReCaptcha $captcha)
+    public function __construct()
     {
         $this->middleware('guest');
-
-        $this->captcha = $captcha;
-    }
-
-    /**
-     * Handle a registration request for the application.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function register(Request $request)
-    {
-        if (! $this->isHuman($request)) {
-            return back()
-                ->withInput()
-                ->withErrors(
-                    ['g-recaptcha-response' => 'Be more human, please.']
-                );
-        }
-
-        $this->validator($request->all())->validate();
-
-        event(new Registered($user = $this->create($request->all())));
-
-        $this->guard()->login($user);
-
-        return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
-    }
-
-    /**
-     * Verify using ReCaptcha that a request was made by a human
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return bool
-     */
-    protected function isHuman(Request $request): bool
-    {
-        $result = $this->captcha->verify(
-            $request->input('g-recaptcha-response'),
-            $request->getClientIp()
-        );
-
-        return $result->isSuccess();
     }
 
     /**
