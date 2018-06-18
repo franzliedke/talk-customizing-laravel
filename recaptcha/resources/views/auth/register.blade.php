@@ -67,7 +67,7 @@
                             <div class="col-md-6">
                                 <div class="form-control{{ $errors->has('g-recaptcha-response') ? ' is-invalid' : '' }}">
                                     <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=en"></script>
-                                    <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+                                    <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.key') }}"></div>
                                 </div>
 
                                 @if ($errors->has('g-recaptcha-response'))

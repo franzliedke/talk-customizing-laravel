@@ -77,7 +77,7 @@ class RegisterController extends Controller
      */
     protected function isHuman(Request $request): bool
     {
-        $captcha = new ReCaptcha('6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe');
+        $captcha = new ReCaptcha(config('services.recaptcha.secret'));
 
         $result = $captcha->verify(
             $request->input('g-recaptcha-response'),
