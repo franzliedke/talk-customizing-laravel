@@ -34,13 +34,20 @@ class RegisterController extends Controller
     protected $redirectTo = '/home';
 
     /**
+     * @var ReCaptcha
+     */
+    protected $captcha;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(ReCaptcha $captcha)
     {
         $this->middleware('guest');
+
+        $this->captcha = $captcha;
     }
 
     /**
@@ -77,9 +84,7 @@ class RegisterController extends Controller
      */
     protected function isHuman(Request $request): bool
     {
-        $captcha = new ReCaptcha(config('services.recaptcha.secret'));
-
-        $result = $captcha->verify(
+        $result = $this->captcha->verify(
             $request->input('g-recaptcha-response'),
             $request->getClientIp()
         );
