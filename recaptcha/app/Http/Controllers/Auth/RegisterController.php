@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use ReCaptcha\ReCaptcha;
 
 class RegisterController extends Controller
 {
@@ -50,6 +51,14 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+        if (! $this->isHuman($request)) {
+            return back()
+                ->withInput()
+                ->withErrors(
+                    ['g-recaptcha-response' => 'Be more human, please.']
+                );
+        }
+
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
@@ -58,6 +67,24 @@ class RegisterController extends Controller
 
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());
+    }
+
+    /**
+     * Verify using ReCaptcha that a request was made by a human
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return bool
+     */
+    protected function isHuman(Request $request): bool
+    {
+        $captcha = new ReCaptcha('6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe');
+
+        $result = $captcha->verify(
+            $request->input('g-recaptcha-response'),
+            $request->getClientIp()
+        );
+
+        return $result->isSuccess();
     }
 
     /**
