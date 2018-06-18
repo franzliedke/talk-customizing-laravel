@@ -61,6 +61,23 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label text-md-right">{{ __('Confirm Humanity') }}</label>
+
+                            <div class="col-md-6">
+                                <div class="form-control{{ $errors->has('g-recaptcha-response') ? ' is-invalid' : '' }}">
+                                    <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=en"></script>
+                                    <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+                                </div>
+
+                                @if ($errors->has('g-recaptcha-response'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
