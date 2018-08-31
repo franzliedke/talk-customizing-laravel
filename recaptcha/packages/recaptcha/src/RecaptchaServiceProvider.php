@@ -2,9 +2,9 @@
 
 namespace LaraLive\Recaptcha;
 
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\Compilers\BladeCompiler;
 use ReCaptcha\ReCaptcha;
 
 class RecaptchaServiceProvider extends ServiceProvider
@@ -22,7 +22,7 @@ class RecaptchaServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        Blade::directive(
+        $this->app->make(BladeCompiler::class)->directive(
             'recaptcha',
             function () {
                 $key = $this->app['config']['services.recaptcha.key'];
@@ -33,7 +33,7 @@ HTML;
             }
         );
 
-        Validator::extendImplicit(
+        $this->app->make(Factory::class)->extendImplicit(
             'human',
             function ($attribute, $value) {
                 $captcha = $this->app->make(ReCaptcha::class);
