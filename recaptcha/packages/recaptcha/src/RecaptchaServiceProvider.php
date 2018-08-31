@@ -18,30 +18,37 @@ class RecaptchaServiceProvider extends ServiceProvider
                 return new ReCaptcha($secret);
             }
         );
-    }
 
-    public function boot()
-    {
-        $this->app->make(BladeCompiler::class)->directive(
-            'recaptcha',
-            function () {
-                $key = $this->app['config']['services.recaptcha.key'];
-                return <<<HTML
+        $this->app->resolving(
+            BladeCompiler::class,
+            function (BladeCompiler $compiler) {
+                $compiler->directive(
+                    'recaptcha',
+                    function () {
+                        $key = $this->app['config']['services.recaptcha.key'];
+                        return <<<HTML
 <script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=en"></script>
 <div class="g-recaptcha" data-sitekey="$key"></div>
 HTML;
+                    }
+                );
             }
         );
 
-        $this->app->make(Factory::class)->extendImplicit(
-            'human',
-            function ($attribute, $value) {
-                $captcha = $this->app->make(ReCaptcha::class);
-                $request = $this->app->make('request');
+        $this->app->resolving(
+            Factory::class,
+            function (Factory $validator) {
+                $validator->extendImplicit(
+                    'human',
+                    function ($attribute, $value) {
+                        $captcha = $this->app->make(ReCaptcha::class);
+                        $request = $this->app->make('request');
 
-                return $captcha->verify($value, $request->getClientIp())->isSuccess();
-            },
-            'Please confirm you are human.'
+                        return $captcha->verify($value, $request->getClientIp())->isSuccess();
+                    },
+                    'Please confirm you are human.'
+                );
+            }
         );
     }
 }
