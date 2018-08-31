@@ -3,6 +3,7 @@
 Material to go along with my "Customizing Laravel" talks (LaravelLiveUK 2018 / Laracon EU 2018)
 
 This sums up the steps I did during my live coding demos, carefully described with lengthy Git commits.
+Feel free to open an issue or comment directly in the commits if you have any questions.
 
 ## Buidling a Laravel package for ReCaptcha
 *Laravel Live UK 2018*
