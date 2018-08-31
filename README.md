@@ -5,6 +5,7 @@ Material to go along with my "Customizing Laravel" talks (LaravelLiveUK 2018 / L
 This sums up the steps I did during my live coding demos, carefully described with lengthy Git commits.
 
 ## Buidling a Laravel package for ReCaptcha
+*Laravel Live UK 2018*
 
 [**Walk through the live coding**](https://github.com/franzliedke/talk-customizing-laravel/commits/master/recaptcha)
 
@@ -26,3 +27,9 @@ Validator::make(data, [
   'g-recaptcha-response' => 'human',
 ]);
 ~~~
+
+## Making Laravel painful again
+*Laracon EU 2018*
+
+This talk was recorded.
+I will link to the video here when it's available.
