@@ -32,5 +32,4 @@ Validator::make(data, [
 ## Making Laravel painful again
 *Laracon EU 2018*
 
-This talk was recorded.
-I will link to the video here when it's available.
+This talk was [recorded](https://www.youtube.com/watch?v=UJZBdUIwTbM).
